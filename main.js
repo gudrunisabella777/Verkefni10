@@ -1,25 +1,27 @@
-//Byrjum á að importa style.css og animejs (animation pakki(sjá README.md))
+// Byrjum á að importa style.css og animejs (animation pakki(sjá README.md))
 
-import './style.css'
+import './styles.css'
 import anime from 'animejs';
 
+let audio = new Audio('/birds.mp3');
+audio.play()
 
-//Byrjum á að skilgreina breyturnar....
+// Byrjum á að skilgreina breyturnar....
 
-var c = document.getElementById("c");
-var ctx = c.getContext("2d");
-var cH;
-var cW;
-var bgColor = "#FF6138";
-var animations = [];
-var circles = [];
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+let cH;
+let cW;
+let bgColor = '#FF6138';
+const animations = [];
 
 
-//Skilgreinum hérna litna sem birtast þegar að notandi smellir á skjáinn
 
-var colorPicker = (function() {
-  var colors = ["#FF6138", "#FFBE53", "#2980B9", "#282741"];
-  var index = 0;
+// Skilgreinum hérna litna sem birtast þegar að notandi smellir á skjáinn
+
+ const colorPicker = (() => {
+  const colors = ['#FF6138', '#FFBE53', '#2980B9', '#282741'];
+  let index = 0;
   function next() {
     index = index++ < colors.length-1 ? index : 0;
     return colors[index];
@@ -28,62 +30,64 @@ var colorPicker = (function() {
     return colors[index]
   }
   return {
-    next: next,
-    current: current
+    next,
+    current
   }
 })();
 
-//Stillingar fyrir animation....
+// Stillingar fyrir animation....
 
 function removeAnimation(animation) {
-  var index = animations.indexOf(animation);
+  const index = animations.indexOf(animation);
   if (index > -1) animations.splice(index, 1);
 }
 
 function calcPageFillRadius(x, y) {
-  var l = Math.max(x - 0, cW - x);
-  var h = Math.max(y - 0, cH - y);
-  return Math.sqrt(Math.pow(l, 2) + Math.pow(h, 2));
+  const l = Math.max(x - 0, cW - x);
+  const h = Math.max(y - 0, cH - y);
+  return Math.sqrt(l**2 + h**2);
 }
 
 function addClickListeners() {
-  document.addEventListener("touchstart", handleEvent);
-  document.addEventListener("mousedown", handleEvent);
+  document.addEventListener('touchstart', handleEvent);
+  document.addEventListener('mousedown', handleEvent);
 };
 
 
 
 function handleEvent(e) {
+  let temp = e;
     if (e.touches) { 
       e.preventDefault();
-      e = e.touches[0];
+      temp = e.touches[0]
+      // e = e.touches[0];
     }
-    var currentColor = colorPicker.current();
-    var nextColor = colorPicker.next();
-    var targetR = calcPageFillRadius(e.pageX, e.pageY);
-    var rippleSize = Math.min(200, (cW * .4));
-    var minCoverDuration = 750;
+    const currentColor = colorPicker.current();
+    const nextColor = colorPicker.next();
+    const targetR = calcPageFillRadius(temp.pageX, temp.pageY);
+    const rippleSize = Math.min(200, (cW * .4));
+    const minCoverDuration = 750;
     
-    var pageFill = new Circle({
-      x: e.pageX,
-      y: e.pageY,
+    const pageFill = new Circle({
+      x: temp.pageX,
+      y: temp.pageY,
       r: 0,
       fill: nextColor
     });
-    var fillAnimation = anime({
+    const fillAnimation = anime({
       targets: pageFill,
       r: targetR,
       duration:  Math.min(targetR / 2 , minCoverDuration ),
-      easing: "easeOutQuart",
-      complete: function(){
+      easing: 'easeOutQuart',
+      complete(){
         bgColor = pageFill.fill;
         removeAnimation(fillAnimation);
       }
     });
     
-    var ripple = new Circle({
-      x: e.pageX,
-      y: e.pageY,
+    const ripple = new Circle({
+      x: temp.pageX,
+      y: temp.pageY,
       r: 0,
       fill: currentColor,
       stroke: {
@@ -92,35 +96,35 @@ function handleEvent(e) {
       },
       opacity: 1
     });
-    var rippleAnimation = anime({
+    const rippleAnimation = anime({
       targets: ripple,
       r: rippleSize,
       opacity: 0,
-      easing: "easeOutExpo",
+      easing: 'easeOutExpo',
       duration: 900,
       complete: removeAnimation
     });
     
-    var particles = [];
-    for (var i=0; i<32; i++) {
-      var particle = new Circle({
-        x: e.pageX,
-        y: e.pageY,
+    const particles = [];
+    for (let i=0; i<32; i++) {
+      const particle = new Circle({
+        x: temp.pageX,
+        y: temp.pageY,
         fill: currentColor,
         r: anime.random(24, 48)
       })
       particles.push(particle);
     }
-    var particlesAnimation = anime({
+    const particlesAnimation = anime({
       targets: particles,
-      x: function(particle){
+      x(particle){
         return particle.x + anime.random(rippleSize, -rippleSize);
       },
-      y: function(particle){
+      y(particle){
         return particle.y + anime.random(rippleSize * 1.15, -rippleSize * 1.15);
       },
       r: 0,
-      easing: "easeOutExpo",
+      easing: 'easeOutExpo',
       duration: anime.random(1000,1300),
       complete: removeAnimation
     });
@@ -128,15 +132,17 @@ function handleEvent(e) {
 }
 
 function extend(a, b){
-  for(var key in b) {
-    if(b.hasOwnProperty(key)) {
-      a[key] = b[key];
+  const i = a;
+  const j = b;
+  for(const key in j) {
+    if(j.hasOwnProperty(key)) {
+      i[key] = j[key];
     }
   }
-  return a;
+  return i;
 }
 
-var Circle = function(opts) {
+let Circle = function(opts) {
   extend(this, opts);
 }
 
@@ -157,20 +163,21 @@ Circle.prototype.draw = function() {
   ctx.globalAlpha = 1;
 }
 
-var animate = anime({
+// eslint-disable-next-line
+const animate = anime({
   duration: Infinity,
-  update: function() {
+  update() {
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, cW, cH);
-    animations.forEach(function(anim) {
-      anim.animatables.forEach(function(animatable) {
+    animations.forEach((anim) => {
+      anim.animatables.forEach((animatable) => {
         animatable.target.draw();
       });
     });
   }
 });
 
-var resizeCanvas = function() {
+const resizeCanvas = function() {
   cW = window.innerWidth;
   cH = window.innerHeight;
   c.width = cW * devicePixelRatio;
@@ -185,39 +192,39 @@ var resizeCanvas = function() {
     // and I have no idea why, so...
     window.CP.PenTimer.MAX_TIME_IN_LOOP_WO_EXIT = 6000; 
   }
-  window.addEventListener("resize", resizeCanvas);
+  window.addEventListener('resize', resizeCanvas);
   addClickListeners();
-  if (!!window.location.pathname.match(/fullcpgrid/)) {
+  if (window.location.pathname.match(/fullcpgrid/)) {
     startFauxClicking();
   }
   handleInactiveUser();
 })();
 
 function handleInactiveUser() {
-  var inactive = setTimeout(function(){
+  const inactive = setTimeout(()=> {
     fauxClick(cW/2, cH/2);
   }, 2000);
   
   function clearInactiveTimeout() {
     clearTimeout(inactive);
-    document.removeEventListener("mousedown", clearInactiveTimeout);
-    document.removeEventListener("touchstart", clearInactiveTimeout);
+    document.removeEventListener('mousedown', clearInactiveTimeout);
+    document.removeEventListener('touchstart', clearInactiveTimeout);
   }
   
-  document.addEventListener("mousedown", clearInactiveTimeout);
-  document.addEventListener("touchstart", clearInactiveTimeout);
+  document.addEventListener('mousedown', clearInactiveTimeout);
+  document.addEventListener('touchstart', clearInactiveTimeout);
 }
 
 function startFauxClicking() {
-  setTimeout(function(){
+  setTimeout(()=> {
     fauxClick(anime.random( cW * .2, cW * .8), anime.random(cH * .2, cH * .8));
     startFauxClicking();
   }, anime.random(200, 900));
 }
 
 function fauxClick(x, y) {
-  var fauxClick = new Event("mousedown");
-  fauxClick.pageX = x;
-  fauxClick.pageY = y;
-  document.dispatchEvent(fauxClick);
+  const clicker= new Event('mousedown');
+  clicker.pageX = x;
+  clicker.pageY = y;
+  document.dispatchEvent(clicker);
 }
