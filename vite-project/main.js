@@ -1,7 +1,10 @@
+//Byrjum á að importa style.css og animejs (animation pakki(sjá README.md))
+
 import './style.css'
 import anime from 'animejs';
 
-//JS
+
+//Byrjum á að skilgreina breyturnar....
 
 var c = document.getElementById("c");
 var ctx = c.getContext("2d");
@@ -10,6 +13,9 @@ var cW;
 var bgColor = "#FF6138";
 var animations = [];
 var circles = [];
+
+
+//Skilgreinum hérna litna sem birtast þegar að notandi smellir á skjáinn
 
 var colorPicker = (function() {
   var colors = ["#FF6138", "#FFBE53", "#2980B9", "#282741"];
@@ -27,6 +33,8 @@ var colorPicker = (function() {
   }
 })();
 
+//Stillingar fyrir animation....
+
 function removeAnimation(animation) {
   var index = animations.indexOf(animation);
   if (index > -1) animations.splice(index, 1);
@@ -42,6 +50,8 @@ function addClickListeners() {
   document.addEventListener("touchstart", handleEvent);
   document.addEventListener("mousedown", handleEvent);
 };
+
+
 
 function handleEvent(e) {
     if (e.touches) { 
