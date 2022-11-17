@@ -30,13 +30,19 @@ Að lokum í uppsetningu Vite, keyrum við upp eftirfarandi skipanir:
 
 # Web API
 API stendur fyrir Application Programming Interface. API hjálpar okkur að búa til margslungið en einfalt notagildi. Með Web API er hægt að hægt að eiga samskipti með öðrum tölvuna frá vafra. 
-Web API sem ég mun nota eru tvenn: Canvas og Play Sound. Canvas verkefnið má finna á síðu tvö eða með því að ýta á hnappinn 
+Web API sem ég mun nota eru tvenn: Canvas og Play Sound. 
+# Canvas API
+Canvas verkefnið má finna á síðu tvö eða með því að ýta á hnappinn "Viltu sjá flotta Canvas verkefnið mitt?" og þá leiðir hlekkurinn á Canvas síðu sem leyfir notanda að smella á síðuna. Með því að smella á síðuna að þá breytist bakgrunnslitur og smellið gerir "spreningar" animation. 
+# Sound API
+Þegar að notandi smellir á hnappinn á heimasíðu kemur fuglahljóð á meðan notandi notar síðuna. 
 
 
 
 # Animation pakki
 Pakkinn sem er notaður fyrir Canvas heitir Anime og pakkinn settur upp í terminalinu með npm install anime. 
 Við getum notað pakkann til að "animate" allskonar öðruvísi CSS eiginleika og meðal annars SVG eða DOM eignleika á vefsíðu. 
+
+
 
 
 

@@ -188,8 +188,7 @@ const resizeCanvas = function() {
 (function init() {
   resizeCanvas();
   if (window.CP) {
-    // CodePen's loop detection was causin' problems
-    // and I have no idea why, so...
+    
     window.CP.PenTimer.MAX_TIME_IN_LOOP_WO_EXIT = 6000; 
   }
   window.addEventListener('resize', resizeCanvas);
