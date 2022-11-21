@@ -1,5 +1,5 @@
 // Byrjum á að importa style.css og animejs (animation pakki(sjá README.md))
-
+<script type="modules" src="./jsskra2" /> 
 import './styles.css'
 import anime from 'animejs';
 
