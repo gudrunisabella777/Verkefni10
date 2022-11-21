@@ -1,7 +1,8 @@
 // Byrjum á að importa style.css og animejs (animation pakki(sjá README.md))
  
 import './styles.css'
-import { anime } from 'animejs';
+// import { anime } from 'animejs';
+import anime from 'animejs';
 
 let audio = new Audio('/birds.mp3');
 audio.play()
